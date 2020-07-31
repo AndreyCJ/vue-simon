@@ -6,6 +6,7 @@
       :isBoxTwoActive="isBoxTwoActive"
       :isBoxThreeActive="isBoxThreeActive"
       :isBoxFourActive="isBoxFourActive"
+      :userTurn="userTurn"
     />
     <SimonControls
       @changeGameState="changeGameState"
@@ -57,14 +58,6 @@ export default {
     SimonControls,
     SimonMessage
   },
-  computed: {
-    classObject() {
-      return {
-        active: this.isActive && !this.error,
-        'text-danger': this.error && this.error.type === 'fatal'
-      }
-    }
-  },
   methods: {
     changeGameState() {
       if (this.state === 'off') {
@@ -79,9 +72,7 @@ export default {
     computerTurn() {
       this.index = 0;
       this.pattern.push(this.getRandomNum());
-      this.lightUp(() => {
-        this.userTurn = true;
-      });
+      this.lightUp();
     },
     getDelay(diff) {
       let delay = 1500;
@@ -95,13 +86,13 @@ export default {
         case 'hard':
           delay = 400;
           break;
-        default:
-          delay = 1500;
-          break;
       }
       return delay;
     },
-    lightUp(callback) {
+    allowInput() {
+      this.userTurn = true;
+    },
+    lightUp() {
       const delay = this.getDelay(this.difficulty);
       let i = 0;
       this.timer = setInterval(() => {
@@ -111,7 +102,7 @@ export default {
         this.clickEffect(this.pattern[i]);
         i++;
       }, delay);
-      callback();
+      this.userTurn = true;
     },
     boxClick(boxNum) {
       if (this.state === 'off') {
@@ -161,7 +152,7 @@ export default {
             this.isBoxThreeActive = false;
             audio3.pause();
             audio3.currentTime = 0;
-          },300);
+          }, 300);
           break;
         case 4:
           this.isBoxFourActive = true;
@@ -181,12 +172,14 @@ export default {
       return (this.pattern[this.index] === boxNum);
     },
     gameOver(){ 
-      this.message = `Игра закончена со счетом - ${this.score}`         
+      this.stopInterval();
+      this.timer = null;        
+      this.message = `Игра закончена со счетом - ${this.score}` 
       this.resetGame();
     },
     resetGame() {
-      this.state = 'off';
       this.userTurn = false;
+      this.state = 'off';
       this.score = 0;
       this.isPlaying = false;
       this.pattern = [];

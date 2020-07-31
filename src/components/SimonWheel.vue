@@ -4,13 +4,13 @@
       <button class="simon__box simon__box--red"
         @click="$emit('boxClick', 1)"
         :class="{ active: isBoxOneActive }"
-        :disabled="isBoxOneActive"
+        :disabled="!userTurn"
       ></button>
       <button
         class="simon__box simon__box--blue"
         @click="$emit('boxClick', 2)"
         :class="{ active: isBoxTwoActive }"
-        :disabled="isBoxTwoActive"
+        :disabled="!userTurn"
       ></button>
     </div>
     <div class="simon__row">
@@ -18,13 +18,13 @@
         class="simon__box simon__box--yellow"
         @click="$emit('boxClick', 3)"
         :class="{ active: isBoxThreeActive }"
-        :disabled="isBoxThreeActive"
+        :disabled="!userTurn"
       ></button>
       <button
         class="simon__box simon__box--green"
         @click="$emit('boxClick', 4)"
         :class="{ active: isBoxFourActive }"
-        :disabled="isBoxFourActive"
+        :disabled="!userTurn"
       ></button>
     </div>
   </div>
@@ -37,7 +37,8 @@ export default {
     isBoxOneActive: Boolean,
     isBoxTwoActive: Boolean,
     isBoxThreeActive: Boolean,
-    isBoxFourActive: Boolean
+    isBoxFourActive: Boolean,
+    userTurn: Boolean
   }
 }
 </script>
