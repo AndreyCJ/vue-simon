@@ -11,6 +11,7 @@
       @changeGameState="changeGameState"
       :childDiff.sync="difficulty"
       :score="score"
+      :state="state"
     />
     <SimonMessage 
       :message="message"
@@ -56,6 +57,19 @@ export default {
     SimonControls,
     SimonMessage
   },
+  watch: {
+    pattern(val) {
+      console.log(val)
+    }
+  },
+  computed: {
+    classObject() {
+      return {
+        active: this.isActive && !this.error,
+        'text-danger': this.error && this.error.type === 'fatal'
+      }
+    }
+  },
   methods: {
     changeGameState() {
       if (this.state === 'off') {
@@ -68,14 +82,11 @@ export default {
       }
     },
     computerTurn() {
-      if(this.state === 'off') {
-        this.isPlaying = false;
-
-      } else {
-        this.index = 0;
-        this.pattern.push(this.getRandomNum());
-        this.lightUp();
-      }
+      this.index = 0;
+      this.pattern.push(this.getRandomNum());
+      this.lightUp(() => {
+        this.userTurn = true;
+      });
     },
     getDelay(diff) {
       let delay = 1500;
@@ -95,7 +106,7 @@ export default {
       }
       return delay;
     },
-    lightUp() {
+    lightUp(callback) {
       const delay = this.getDelay(this.difficulty);
       let i = 0;
       this.timer = setInterval(() => {
@@ -105,17 +116,17 @@ export default {
         this.clickEffect(this.pattern[i]);
         i++;
       }, delay);
-      this.userTurn = true;
+      callback();
     },
     boxClick(boxNum) {
-      this.clickEffect(boxNum);
       if (this.state === 'off') {
         return;
       }
+      this.clickEffect(boxNum);
 
       let isCorrect = this.isInputCorrect(boxNum);
       if (!isCorrect) {
-        this.processGameOver();
+        this.gameOver();
       } else {
         if (this.index === this.pattern.length - 1) {
           this.score++;
@@ -137,7 +148,7 @@ export default {
             this.isBoxOneActive = false;
             audio1.pause();
             audio1.currentTime = 0;
-          }, 200);
+          }, 300);
           break;
         case 2:
           this.isBoxTwoActive = true;
@@ -146,7 +157,7 @@ export default {
             this.isBoxTwoActive = false;
             audio2.pause();
             audio2.currentTime = 0;
-          }, 200);
+          }, 300);
           break;
         case 3:
           this.isBoxThreeActive = true;
@@ -155,7 +166,7 @@ export default {
             this.isBoxThreeActive = false;
             audio3.pause();
             audio3.currentTime = 0;
-          },200);
+          },300);
           break;
         case 4:
           this.isBoxFourActive = true;
@@ -164,7 +175,7 @@ export default {
             this.isBoxFourActive = false;
             audio4.pause();
             audio4.currentTime = 0;
-          }, 200);
+          }, 300);
           break;
       }
     },
@@ -174,7 +185,7 @@ export default {
     isInputCorrect(boxNum) {
       return (this.pattern[this.index] === boxNum);
     },
-    processGameOver(){ 
+    gameOver(){ 
       this.message = `Игра закончена со счетом - ${this.score}`         
       this.resetGame();
     },

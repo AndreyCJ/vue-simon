@@ -2,7 +2,7 @@
 <div class="simon__controls">
   <div class="simon__info">
     <h2>Раунд: {{ score }}</h2>
-    <button @click="$emit('changeGameState')" class="simon__start">Старт</button>
+    <button @click="$emit('changeGameState')" class="simon__start" :class="{'simon__start--active': isGameRunning}">Старт</button>
   </div>
   <div class="simon__options">
     <h2>Уровень сложности:</h2>
@@ -48,11 +48,18 @@ export default {
   name: 'SimonControls',
   data() {
     return {
-      childDiff: 'easy'
+      childDiff: 'easy',
+    }
+  },
+  computed: {
+    isGameRunning() {
+      const isRunning = this.state === 'on' ? true : false;
+      return isRunning;
     }
   },
   props: {
-    score: Number
+    score: Number,
+    state: String
   }
 }
 </script>
@@ -87,16 +94,21 @@ export default {
 
 .simon__start {
   font-size: 1.5rem;
-  padding: 7px 25px;
+  padding: 10px 25px;
   border: none;
   background: #3E89DD;
   border-radius: 10px;
   color: #f4f4f4;
   cursor: pointer;
   outline: none;
+  border: 5px solid #3E89DD;
 }
 
 .simon__start:hover {
   background: #5fa3f1;
+}
+
+.simon__start--active {
+  border: 5px solid #89CF5E;
 }
 </style>

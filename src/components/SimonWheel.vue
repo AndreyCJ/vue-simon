@@ -3,13 +3,13 @@
     <div class="simon__row">
       <button class="simon__box simon__box--red"
         @click="$emit('boxClick', 1)"
-        :class="{ active: isBoxOneActive}"
+        :class="{ active: isBoxOneActive }"
         :disabled="isBoxOneActive"
       ></button>
       <button
         class="simon__box simon__box--blue"
         @click="$emit('boxClick', 2)"
-        :class="{ active: isBoxTwoActive}"
+        :class="{ active: isBoxTwoActive }"
         :disabled="isBoxTwoActive"
       ></button>
     </div>
@@ -17,14 +17,14 @@
       <button
         class="simon__box simon__box--yellow"
         @click="$emit('boxClick', 3)"
-        :class="{ active: isBoxThreeActive}"
+        :class="{ active: isBoxThreeActive }"
         :disabled="isBoxThreeActive"
       ></button>
       <button
         class="simon__box simon__box--green"
         @click="$emit('boxClick', 4)"
-        :class="{ active: isBoxFourActive}"
-        :disabled="isBoxThreeActive"
+        :class="{ active: isBoxFourActive }"
+        :disabled="isBoxFourActive"
       ></button>
     </div>
   </div>
@@ -90,5 +90,6 @@ export default {
 
 .active {
   background-color: #00000027;
+  pointer-events: none;
 }
 </style>
