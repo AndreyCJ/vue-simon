@@ -57,11 +57,6 @@ export default {
     SimonControls,
     SimonMessage
   },
-  watch: {
-    pattern(val) {
-      console.log(val)
-    }
-  },
   computed: {
     classObject() {
       return {
