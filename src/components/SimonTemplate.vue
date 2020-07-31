@@ -56,14 +56,6 @@ export default {
     SimonControls,
     SimonMessage
   },
-  watch: {
-    pattern: (val) => {
-      console.log(val);
-    },
-    difficulty: (va) => {
-      console.log(va);
-    }
-  },
   methods: {
     changeGameState() {
       if (this.state === 'off') {
@@ -101,7 +93,6 @@ export default {
           delay = 1500;
           break;
       }
-      console.log(delay)
       return delay;
     },
     lightUp() {
