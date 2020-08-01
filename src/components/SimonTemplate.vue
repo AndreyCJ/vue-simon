@@ -205,6 +205,14 @@ a {
   color: #3F72AF;
 }
 
+button:focus {
+  outline: none;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
 .--hidden {
   visibility: hidden;
 }
