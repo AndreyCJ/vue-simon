@@ -24,4 +24,12 @@ export default {
   color: #333;
 }
 
+
+button:focus {
+  outline: none !important;
+}
+
+button::-moz-focus-inner {
+  border: 0 !important;
+}
 </style>
