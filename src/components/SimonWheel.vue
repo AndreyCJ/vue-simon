@@ -1,31 +1,27 @@
 <template>
   <div class="simon__container">
     <div class="simon__row">
-      <button class="simon__box simon__box--red"
+      <div class="simon__box simon__box--red"
         @click="$emit('boxClick', 1)"
-        :class="{ active: isBoxOneActive }"
-        :disabled="!userTurn"
-      ></button>
-      <button
+        :class="{ active: isBoxOneActive, '.no-pointer': !userTurn }"
+      ></div>
+      <div
         class="simon__box simon__box--blue"
         @click="$emit('boxClick', 2)"
         :class="{ active: isBoxTwoActive }"
-        :disabled="!userTurn"
-      ></button>
+      ></div>
     </div>
     <div class="simon__row">
-      <button
+      <div
         class="simon__box simon__box--yellow"
         @click="$emit('boxClick', 3)"
         :class="{ active: isBoxThreeActive }"
-        :disabled="!userTurn"
-      ></button>
-      <button
+      ></div>
+      <div
         class="simon__box simon__box--green"
         @click="$emit('boxClick', 4)"
         :class="{ active: isBoxFourActive }"
-        :disabled="!userTurn"
-      ></button>
+      ></div>
     </div>
   </div>
 </template>
@@ -64,7 +60,7 @@ export default {
   font-size: 64px;
   text-align: center;
   box-shadow: 2px 4px 8px #cccccc;
-  cursor: pointer;
+  cursor: default !important;
   border: none;
   outline: none;
 }

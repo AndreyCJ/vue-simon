@@ -49,7 +49,6 @@ export default {
       isBoxThreeActive: false,
       isBoxFourActive: false,
       message: '',
-      timer: null,
       isDisabled: false,
     }
   },
@@ -71,7 +70,8 @@ export default {
     },
     computerTurn() {
       this.index = 0;
-      this.pattern.push(this.getRandomNum());
+      const randomNum = this.getRandomNum();
+      this.pattern.push(randomNum);
       this.lightUp();
     },
     getDelay(diff) {
@@ -93,36 +93,42 @@ export default {
       this.userTurn = true;
     },
     lightUp() {
-      const delay = this.getDelay(this.difficulty);
+      let delay = this.getDelay(this.difficulty);
       let i = 0;
-      this.timer = setInterval(() => {
-        if(i >= this.pattern.length){
-          this.stopInterval();
+      let timer = setInterval(() => {
+        if (i >= this.pattern.length) {
+          clearInterval(timer);
+        } else {
+          this.clickEffect(this.pattern[i])
+          i++;
         }
-        this.clickEffect(this.pattern[i]);
-        i++;
       }, delay);
+      
       this.userTurn = true;
     },
     boxClick(boxNum) {
       if (this.state === 'off') {
         return;
       }
-      this.clickEffect(boxNum);
+      if (this.userTurn) {
+        this.clickEffect(boxNum);
 
-      let isCorrect = this.isInputCorrect(boxNum);
-      if (!isCorrect) {
-        this.gameOver();
-      } else {
-        if (this.index === this.pattern.length - 1) {
-          this.score++;
-          setTimeout(() => {
-            this.userTurn = false;
-            this.computerTurn();
-          }, 1000);
+        let isCorrect = this.isInputCorrect(boxNum);
+        if (!isCorrect) {
+          this.gameOver();
         } else {
-          this.index++;
+          if (this.index === this.pattern.length - 1) {
+            this.score++;
+            setTimeout(() => {
+              this.userTurn = false;
+              this.computerTurn();
+            }, 1000);
+          } else {
+            this.index++;
+          }
         }
+      } else {
+        return;
       }
     },
     clickEffect(boxNum) {
@@ -172,8 +178,6 @@ export default {
       return (this.pattern[this.index] === boxNum);
     },
     gameOver(){ 
-      this.stopInterval();
-      this.timer = null;        
       this.message = `Игра закончена со счетом - ${this.score}` 
       this.resetGame();
     },
@@ -184,9 +188,6 @@ export default {
       this.isPlaying = false;
       this.pattern = [];
       this.index = 0;
-    },
-    stopInterval(){
-      clearInterval(this.timer);
     },
   }
 }
